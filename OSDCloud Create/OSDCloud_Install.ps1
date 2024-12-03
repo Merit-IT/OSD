@@ -63,3 +63,22 @@ if (-not (Get-Module -ListAvailable -Name OSD)) {
 } else {
     Write-Host -ForegroundColor Green "[+] OSD module is already installed."
 }
+
+#Setup the OSDCloud Support folder
+$SupportPath = "C:\MeritOSDSupport"
+if (!(Test-Path -Path $SupportPath)) {
+    New-Item -Path $SupportPath -ItemType Directory -Force
+}
+
+#copy in unattend.xml and logo from github
+$unattendUrl = "https://raw.githubusercontent.com/Merit-IT/OSD/refs/heads/main/SupportFiles/Unattend.xml"
+$unattendDestinationPath = "$SupportPath\unattend.xml"
+
+Invoke-RestMethod -Uri $unattendUrl -OutFile $unattendDestinationPath
+Write-Host -ForegroundColor Green "[+] Unattend.xml has been downloaded to $SupportPath"
+
+$wallpaperUrl = "https://raw.githubusercontent.com/Merit-IT/OSD/main/logo/merit_wallpaper.jpg"
+$wallpaperDestinationPath = "$SupportPath\merit_wallpaper.jpg"
+
+Invoke-RestMethod -Uri $wallpaperUrl -OutFile $wallpaperDestinationPath
+Write-Host -ForegroundColor Green "[+] merit_wallpaper.jpg has been downloaded to $SupportPath"
